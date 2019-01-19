@@ -40,6 +40,8 @@ public class HttpHandShakeInterc implements HandshakeInterceptor {
 		// is the request of the handshake compatible with the http request
 			
 			// get this sessionId and save it session attribute sessionId... important
+			// the sessionId can be used for private chat requests... 
+			// will discuss this in another tutorial...
 			ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
 			HttpSession session = servletRequest.getServletRequest().getSession();
 			attributes.put("sessionId", session.getId());
