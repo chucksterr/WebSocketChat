@@ -10,10 +10,9 @@ SENSE OF TUTORIALS SO, I HAVE CREATED A PACKAGE CALLED DOCUMENTATION.
 THE TEXT FILE : "documentation.txt" LAYS DOWN THE ORDER IN WHICH EACH FILE WAS CREATED. THEN EACH JAVA CLASS HAS A CORRESPONDING
 
 TEXT FILE THE THE DOCUMENTATION PACKAGE EXPLAINING WHAT EACH METHODS DOES MORE OR LESS LINE BY LINE.
-
+I
 I ONLY HAVE THE DOCUMENTATION FOR MAIN.JS TO COMPLETE... I WILL NOT PREPARE DOCUMENTATION FOR THE CSS OR HTML... 
-==================================================================================================================================
-
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ON A PERSONAL NOTE : I have consulted a ton of free resources to make my code work... we have an amazing online community to support 
 us, beginners / junior developers. When consulting those pages, please disable your AD Blockers.
 
