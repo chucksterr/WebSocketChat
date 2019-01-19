@@ -1,0 +1,53 @@
+EventListener:
+
+This will let the app know to look for certain types of events: 
+==================================================================================
+@Component
+public class WebSocketEventLister {
+	
+	private static final Logger logger = LoggerFactory.getLogger(WebSocketEventLister.class);
+	
+	@Autowired
+	SimpMessageSendingOperations messagingTemplate;
+==================================================================================	
+	/* look out for new webSocket connection and log them*/
+	@EventListener
+	public void handleWebSocketConnectListener (SessionConnectedEvent connectEvent) {
+		
+		logger.info("New web socket connection successful");
+	}
+==================================================================================
+	
+	/* look out for session disconnections... create a message that lets everyone that a
+	 * particular user has disconnected from the public room*/
+	@EventListener
+	public void handleWbSocketDisconnectListener(SessionDisconnectEvent discEvent) {
+		
+		/* Access the STOMP header and get the message when a there is a disconnection
+		   ... the message from the message broker is a JSON of the ChatMessage created
+		   when sending a text...*/
+		StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(discEvent.getMessage());
+		
+		/* the header accessor also saves the session attributes... retrieve the 
+		   the username is the HttpSession object and save it in a string*/
+		String username = (String) headerAccessor.getSessionAttributes().get("username");
+		
+		/* when disconnecting, if the HttpSession object holds a username*/
+		if(username !=null) {
+			
+			// First log the disconnect event
+			logger.info("User disconnect: " + username); 
+			
+			// Create and empty message 
+			ChatMessage chatMessage = new ChatMessage();
+			// forcibly set the message type from an element in the enum
+			chatMessage.setType(ChatMessage.MessageType.LEAVE);
+			// set the sender by using the username saved in the HttpSession object
+			chatMessage.setSender(username);
+			
+			messagingTemplate.convertAndSend("/topic/publicChatRoom", chatMessage);
+			/* distribute the message to the chat room... the content itself 
+			   will be defined in the main.js*/
+		}
+	}
+}

@@ -1,0 +1,59 @@
+The handshake:
+
+It is important to understand why we are using of web sockets :
+
+When we open a browser and connect to the Internet, you type something in the 
+address bar and send a request to the server. If the address is found, a view is returned (response).
+
+It is therefore a request-response protocol. In the case of a chat, the client sends a request
+and the server in turn sends itself a request to see if a client request came in (every second)
+and then shoots a response to the client.... It is very taxing especially since the is a new
+connection with every requests. It provides one way communication 
+
+A WebSocket is a two ways communication protocol that creates a channel for said communication
+Client to server and server to Client; one of its branches is STOMP 
+(streaming text oriented messaging protocol). Basically looks for a web socket to cross
+to deliver text message data. STOMP is to Websocket what HTTP is to TCP(unconfigured 
+protocol that permits transmission of data... needs sub protocols like HTTP and FTP).
+
+Existing infrastructure limits the deployment of webSockets. Generally, HTTP uses port
+80 and 443, therefore webSocket has to use other ports to connect. The other ports are blocked
+by most Firewalls; using proxies come with its share of problems. 
+
+To deploy easily, the webSocket makes use of the HTTP handshake. Basically, the
+webSocket greets the HTTP; if the HTTP responds with and opened connection,
+the HTTP connection is upgraded to a webSocket connection (webSocket piggy backs http).
+STOMP uses webSocket to exchange information.
+=====================================================================================
+@Component
+public class HttpHandShakeInterc implements HandshakeInterceptor {
+
+	private Logger logger = LoggerFactory.getLogger(HttpSessionHandshakeInterceptor.class);
+
+	@Override
+	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
+			Map<String, Object> attributes) throws Exception {
+		
+		logger.info("Call beforeHandshake... attempting Handshake");
+		
+		if(request instanceof ServletServerHttpRequest) {
+		// is the request of the handshake compatible with the http request
+			
+			// get this sessionId and save it session attribute sessionId... important
+			ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
+			HttpSession session = servletRequest.getServletRequest().getSession();
+			attributes.put("sessionId", session.getId());
+		}
+
+		return true; // continue with handshake
+	}
+
+	@Override
+	public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
+			Exception exception) {
+
+		logger.info("Call afterHandshake... Handshake successful");
+		
+	}
+
+}

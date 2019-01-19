@@ -1,0 +1,8 @@
+com\websocket\interceptors\HttpHandShakeInterc.class
+com\websocket\config\WebSocketConfig.class
+com\websocket\models\ChatMessage.class
+com\websocket\models\ChatMessage$MessageType.class
+com\websocket\SocketApplication.class
+com\websocket\controllers\MainCtrl.class
+com\websocket\controllers\WebSocketCtrl.class
+com\websocket\listener\WebSocketEventLister.class
