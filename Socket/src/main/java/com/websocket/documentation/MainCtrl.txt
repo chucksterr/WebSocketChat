@@ -1,0 +1,64 @@
+
+@Controller
+public class MainCtrl {
+	
+	/* in this case... index get request will redirect to login
+	   if the session object does not hold a username*/
+	@RequestMapping("/")
+	public String index(HttpServletRequest request, Model model) {
+		
+		String username = (String)request.getSession().getAttribute("username");
+		
+		if(username == null || username.isEmpty()) {
+			return "redirect:/login";
+		}
+		/*
+		  if there is a username, however, it will save it in a 
+		  model atttribute that will hold a session object with a username 
+		*/
+		model.addAttribute("username", username);
+		// it will pass the username to chat.html
+		return "chat";
+	}
+	
+	@RequestMapping(path="/login", method=RequestMethod.GET)
+	public String showLoginPage() {
+		
+		return "login";
+	}
+	
+	@RequestMapping(path="/login", method=RequestMethod.POST)
+	public String showLoginPage2(HttpServletRequest request, 
+			@RequestParam(defaultValue="") String username) {
+		
+		/* there is a username parameter tied to a form that will 
+		  be passed as param to another page. Once uname is entered
+		  trim it to remove white space 
+		*/
+		username = username.trim();
+		
+		/*after triming... if it is empty return to login*/
+		if(username.isEmpty()) {
+			
+			return "login";
+		}
+		/* if there is a username saved from the form... request 
+		   the current HttpSession object and save the username 
+		   from the form in a username attribute in the session 
+		   object
+		  */
+		request.getSession().setAttribute("username", username);
+		
+		/* redirect to index URI, will have a session object with a 
+		   username and will therefore further redirect to chat room */
+		return "redirect:/";
+	}
+	
+	@RequestMapping(path="/logout")
+	public String logout(HttpServletRequest request) {
+		
+		request.getSession(true).invalidate();
+		
+		return "redirect:/login";
+	}
+}

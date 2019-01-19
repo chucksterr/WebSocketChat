@@ -1,0 +1,9 @@
+Order of creation :
+
+- WebSocketConfig 
+- WebSocketEventLister (listener)
+- ChatMessage
+- Controllers (MainCtrl and then WebSocketCtrl)
+- HTML
+- JS
+- CSS

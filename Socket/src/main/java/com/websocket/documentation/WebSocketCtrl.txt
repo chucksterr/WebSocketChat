@@ -1,0 +1,33 @@
+@Controller
+public class WebSocketCtrl {
+	
+	@MessageMapping("/chat.sendMessage") /* puts the message in an envelop, 
+	 brings it to the post office "/app" and gives it to the message broker
+	 "post man"*/
+	
+	@SendTo("/topic/publicChatRoom")/*delivers envelop to the room*/
+	public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
+	/\
+	==== //payload is the JSON object holding: send, content, messageType
+	
+		return chatMessage; 
+		/* chatMessage now holds a JSON that will be returned with the
+		   following pairing: 
+		   chatMessage = {
+		   "sender" : "value",
+		   "content": "value",
+		   "messageType" : "value"
+		   }
+		   */
+		// In main.js it will be converted back into a java object
+		// and information can be retrieved when converted back
+	}
+	
+	@MessageMapping("/chat.addUser")
+	@SendTo("/topic/publicChatRoom")
+	public ChatMessage addUser(ChatMessage chatMessage, SimpMessageHeaderAccessor accessor) {
+		
+		accessor.getSessionAttributes().put("username", chatMessage.getSender());
+		return chatMessage;
+	}
+}

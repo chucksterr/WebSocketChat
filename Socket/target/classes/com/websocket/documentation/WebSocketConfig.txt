@@ -1,0 +1,75 @@
+Flow of execution when sending a message :
+							 ______________
+							|			   |
+						   _|message broker|(3)
+						  / |______________|
+						 /          |       \
+						/			|		 \
+					   /		____|____	  \
+					  /		   |WS end pt|	   \
+			 ________/_____	   |_________|	____\_______
+			|			   | 		|	   |			|
+			|/topic	(4)	   |   		|	   |   /app	(2)	|
+			|______________|		|	   |____________|
+				   \				|			   /
+					\		 _______|_____		  /
+					 \		|			  |      /
+					  \_____|Client (1)   |_____/
+							|_____________|
+
+Client (browser) is connected to web socket server 
+
+1 - The client will be connected to the socket (so will the message broker)
+
+1.1 When the client sends a message it is sent to /app ==> 
+	I basically put a letter in an envelop and address it to someone
+
+2- The message is like a letter that I am bringing to the post office and giving 
+   to the clerk with the address. 
+   It defines the URL which takes the message to the message broker (sorting)
+
+3- The message broker is a postman that takes the message from the post office 
+   and takes it to its destination.
+   
+4- At the destination the recipient receives the envelop (message at destination)
+   Opens it (destringifies the JSON object)...
+   And reads it (displays it on the client screen)
+================================================================================
+						WebSocketConfig
+================================================================================
+
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
+
+	@Autowired
+	private HttpHandShakeInterc handshakeInterceptor; (see appropriate file)
+	
+	@Override
+	public void configureMessageBroker(MessageBrokerRegistry config) {
+		
+		config.setApplicationDestinationPrefixes("/app");
+		/*sets URL "/app" which takes the message to the msgBroker; */
+		
+		
+		config.enableSimpleBroker("/topic");
+		/* these are the recipients of the messages sent from a client or delivery address
+		   basically, a letter is delivered to an entire room and read outloud*/
+		
+		 /* "/queue" will have the message broker distribute the msg to a particular user*/
+		//		config.setUserDestinationPrefix("/user");
+	}
+=======================================================================================
+=======================================================================================
+	@Override
+	public void registerStompEndpoints(StompEndpointRegistry registry) {
+
+		registry.addEndpoint("/ws").withSockJS().setInterceptors(handshakeInterceptor);
+		
+		/* the end points are the URLs where the web sockets will be registered...
+		 * the message broker exposes an end point so that the client can contact 
+		 * and form a connection... to establish contact with the server*/	
+		
+		/* the endpoint is set after a successful handshake*/
+	}
+}
