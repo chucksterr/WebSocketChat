@@ -1,0 +1,185 @@
+There are three parts to Main.js:
+
+1- Web socket connections and associated behaviours
+
+2- Message delivery
+
+3- Use of JavaScript - HTML DOM methods to modify chat page to show messages
+   for more info ====>   (https://www.w3schools.com/js/js_htmldom.asp)
+===================================================
+/* (explanation for line 15)
+The purpose of "use strict" is to indicate that the code should be executed in "strict mode".
+With strict mode, you can not, for example, use undeclared variables.
+It helps you to write cleaner code
+*/
+'use strict';
+
+/* (lines 22 to 25)
+we are saving the various element IDs, retrieved from chat.html,
+into variables that can later be used in this file to 
+manipulate the DOM 
+*/
+var messageForm = document.querySelector('#messageForm');
+var messageInput = document.querySelector('#message');
+var messageArea = document.querySelector('#messageArea');
+var connectingElement = document.querySelector('#connecting');
+
+/*
+Line 31 will hold the web socket connection and the associated
+Streaming Text Oriented Messaging Protocol (STOMP)
+*/
+var stompClient = null;
+
+// Line 34 will hold the username retrieved from chat.html (comes from login.html)
+var username = null; // This has been declared as a global variable
+
+===============================================================================
+/* THE CONNECT FUNCTION
+chat.html calls the main.js file; through its execution, the first function
+that will be called is connect(); this will open a web socket connection
+*/
+function connect(){
+/*
+The username is passed from the login form to the chat room. In order to make
+use of it later, we will modify the global variable by selecting the text value 
+of the DIV Id #username and saving it in the global variable.
+*/
+	username = document.querySelector('#username').innerText.trim();
+	
+/*
+Open up a new socket connection with sock JS and link it to the 
+STOMP messaging protocol
+*/
+	var socket = new SockJS("/ws");
+	stompClient = Stomp.over(socket);
+=========================================================================
+/* Line 61
+stompClient.Connect attemps to piggy back on HTTP. We are declaring two functions...
+what happens if the connection is successful (onConnected);
+what happens if the connection fails (onError);
+*/
+	stompClient.connect({}, onConnected, onError);
+}
+// Call function connect() to connect to WebSocket Server
+connect();
+=========================================================================
+/*
+If connection is successful... consult this section with documentation
+file: WebSocketCtrl.txt
+*/
+function onConnected(){
+	/* 
+	Subscribe to the public chat room, when the message broker will
+	receive a message (onMessageReceived function described later), 
+	it will post it to the public chat room 
+	*/
+	stompClient.subscribe('/topic/publicChatRoom', onMessageReceived);
+	
+	// Tell the username to the server, this url is accessible when connection
+	stompClient.send("/app/chat.addUser",
+		{},
+		JSON.stringify({sender : username, type : 'JOIN'})
+	)
+	// #connecting will disappear if web socket connection is successful
+	// DOM manipulation mentioned earlier
+	connectingElement.classList.add('hidden'); 
+}
+===============================================================================
+// If connection fails...
+function onError(error){
+	
+connectingElement.textContent = 'Could not connect to WebSocket Server. Please refresh this page to try again.';
+connectingElement.style.color = 'red';
+}
+===============================================================================
+/* 
+This function is tied down to the click event in the 
+MessageForm element "submit" button... the linking is done
+on the last line of the file
+*/
+function sendMessage(event){
+	/* save text inside message input box inside a variable*/
+	var messageContent = messageInput.value.trim();
+	
+	/* if there is a message AND a STOMP client*/
+	if(messageContent && stompClient){
+		
+		/* create a JSON base on ChatMessage Java class and associate
+		   the value of from messageInput into the content key*/
+		var chatMessage = {
+			sender: username,
+			content: messageInput.value,
+			type: 'CHAT'
+		};
+		
+		/* 
+		The STOMP "send" method will direct the value of content to the room
+ https://stomp-js.github.io/stomp-websocket/codo/class/Client.html#send-dynamic
+ 		*/
+		stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+
+		/* clear content value as to avoid appending future messages to 
+		   current one and send a list of messages instead of the newest*/
+		messageInput.value = '';
+	}
+	event.preventDefault();
+}
+==================================================================================
+/*
+in here we send the messages to the message area; depending on the type
+of message what will be displayed will vary... JOIN and LEAVE are predefined
+while CHAT is variable... To properly display the messages, we will have to
+manipulate the Document Object Model with various methods...
+*/
+function onMessageReceived(payload){
+	var message = JSON.parse(payload.body);
+	
+	var messageElement = document.createElement('li'); 
+	
+	if(message.type === 'JOIN'){// type defined in function onConnect()
+								// linked to connect event
+								
+		messageElement.classList.add('event-message');
+		message.content = message.sender + ' joined!';
+	
+	} else if (message.type === 'LEAVE'){// type defined in HttpHandShakeInterc
+										 // linked to disconnect event
+		
+		messageElement.classList.add('event-message'); // css style
+		message.content = message.sender + ' left the conversation!'
+		
+	} else {// if it is not a JOIN or LEAVE type
+		
+		// add some css to the message
+		messageElement.classList.add('chat-message'); 
+		
+		// add <strong> element to display the name in bold
+		var usernameElement = document.createElement('strong');
+		
+		// add some CSS to display the name in blue 
+		usernameElement.classList.add('nickname');
+		
+		// DOM method to create some text and append it to an element
+		// https://www.w3schools.com/jsref/met_document_createtextnode.asp
+		var usernameText = document.createTextNode(message.sender);
+		
+		// usernameElement will append the usernameText from the message object
+		usernameElement.appendChild(usernameText);
+		
+		// messageElement will append the usernameElement
+		messageElement.appendChild(usernameElement);
+	}
+	
+	
+	var textElement = document.createElement('span');
+	var messageText = document.createTextNode(message.content);
+	textElement.appendChild(messageText);
+	
+	messageElement.appendChild(textElement);
+	
+	messageArea.appendChild(messageElement);
+	messageArea.scrollTop = messageArea.scrollHeight;
+	
+}
+
+messageForm.addEventListener('submit', sendMessage, true);
