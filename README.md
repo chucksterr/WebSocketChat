@@ -18,6 +18,6 @@ ON A PERSONAL NOTE : I have consulted a ton of free resources to make my code wo
 us, beginners / junior developers. When consulting those pages, please disable your AD Blockers.
 
 We all know there are costs associated with hosting. And yet they upload it free of charge, so help those amazing teachers out... 
-Please don't be male genitalias and solid bodily wastes exits and let their work support itself through ads. 
+Please don't be male genitalias and let their work support itself through ads. 
 (No matter how effin' annoying they can be)
 
