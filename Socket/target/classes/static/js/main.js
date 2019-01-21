@@ -79,6 +79,7 @@ function onMessageReceived(payload){
 	}
 	
 	var textElement = document.createElement('span');
+	textElement.classList.add('direct-chat-text');
 	var messageText = document.createTextNode(message.content);
 	textElement.appendChild(messageText);
 	

@@ -87,15 +87,37 @@ html, body {
     padding: 10px 20px;
     margin: 0;
     border-bottom: 1px solid #f4f4f4;
+    position: relative;
+    padding-left: 10px;
 }
+
+/* #chat-container ul li:before {
+    line-height: 1.5rem;
+    padding: 10px 20px;
+    margin: 0;
+    border-bottom: 1px solid #f4f4f4;
+    position: absolute;
+    top : 6px;
+    left: 0;
+} 
  
+#chat-container ul li:nth-child(even) {
+    padding-right: 10px;
+    text-align: right;
+    padding-left: 0;
+} 
+
+#chat-container ul li:nth-child(even):before {
+    left: auto;
+    right: 0;
+}  */
 #chat-container ul li p {
     margin: 0;
 }
  
 #chat-container .event-message {
     width: 100%;
-    text-align: center;
+    text-align: center !important; 
     clear: both;
 }
  
