@@ -170,16 +170,52 @@ function onMessageReceived(payload){
 		messageElement.appendChild(usernameElement);
 	}
 	
-	
+	// We now create a span element : <span> </span>
 	var textElement = document.createElement('span');
+	
+	/* 
+	   We now create a text node (space that holds text) that will receive the
+	   message content as an argument and that will be appendable to any element
+	*/
 	var messageText = document.createTextNode(message.content);
+	
+	/*
+	   We append the content of the message to the span element :
+	   <span> ome user or auto message to be distributed </span>
+	*/
 	textElement.appendChild(messageText);
 	
+	/*
+	   messageElement creates : <li> </li> and has some CSS attached to it...
+	   you now append the message content to it and you have :
+	   <li>
+	   <span> Some user or auto message to be distributed </span>
+	   </li>
+	*/
 	messageElement.appendChild(textElement);
 	
+	/*
+	   In the message area, you now append the message element
+	   and the message is displayed to all
+	*/
 	messageArea.appendChild(messageElement);
+	
+	/*
+	   Adding a scroll bar let's you see all the messages since you joined the conversation
+	   and controls the size of the text area... text area size will not increase as the
+	   conversation goes on
+	*/
 	messageArea.scrollTop = messageArea.scrollHeight;
 	
 }
-
+/*
+   With this event listener, we are telling JS to trigger the sendMessage function,
+   this will in turn trigger the onMessageReceived function which will append the 
+   message to the text Area
+*/
 messageForm.addEventListener('submit', sendMessage, true);
+/*
+	LONG LIVE WEB SOCKETS!!!
+	LONG LIVE STOMP!!!
+	LONG LIVE MESSAGE BROKERS!!!
+*/
