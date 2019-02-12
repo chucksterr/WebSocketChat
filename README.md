@@ -1,13 +1,13 @@
 # WebSocketChat: STOMP & SPRING BOOT
 Spring boot chat
 
-I DO NOT OWN THIS CODE... IT IS A TUTORIAL THAT I FOLLOWED, I HAVE HOWEVER SPENT SOME TIME UNDERSTANDING ROUGHLY EVERY LINE OF CODE.
+I DO NOT OWN THIS CODE... IT COMES FROM SEVERAL TUTORIALS THAT I FOLLOWED, I HAVE HOWEVER SPENT SOME TIME UNDERSTANDING ROUGHLY EVERY LINE OF CODE.
 
-I STARTED LEARNING JAVA 2 AND A HALF MONTHS AGO AND SPRING BOOT 2 WEEKS AGO. I UNDERSTAND HOW CHALLENGING IT CAN BE TO MAKE SENSE OF TUTORIALS SO, I HAVE CREATED A PACKAGE CALLED DOCUMENTATION. 
+I started learning Java a couple months ago in January 2018. I understand how challenging it can be to make sense of tutorials so, I have created a package called "documentation". 
 
-THE TEXT FILE : "documentation.txt" LAYS DOWN THE ORDER IN WHICH EACH FILE WAS CREATED. THEN EACH JAVA CLASS HAS A CORRESPONDING TEXT FILE THE THE DOCUMENTATION PACKAGE EXPLAINING WHAT EACH METHODS DOES MORE OR LESS LINE BY LINE.
+THE text file : "documentation.txt" lays down the order in which each document was created; Then each java class has a corresponding text file in the documentation package explaining what each methods does more or less line by line.
 
-I ONLY HAVE THE DOCUMENTATION FOR MAIN.JS TO COMPLETE... I WILL NOT PREPARE DOCUMENTATION FOR THE CSS OR HTML... 
+I WILL NOT PREPARE DOCUMENTATION FOR THE CSS OR HTML... but I will refer you to the w3schools website.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ON A PERSONAL NOTE : I have consulted a ton of free resources to make my code work... we have an amazing online community to support 
