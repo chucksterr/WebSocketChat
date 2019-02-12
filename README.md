@@ -3,7 +3,7 @@ Spring boot chat
 
 I DO NOT OWN THIS CODE... IT COMES FROM SEVERAL TUTORIALS THAT I FOLLOWED, I HAVE HOWEVER SPENT SOME TIME UNDERSTANDING ROUGHLY EVERY LINE OF CODE.
 
-I started learning Java a couple months ago in January 2018. I understand how challenging it can be to make sense of tutorials so, I have created a package called "documentation". 
+I started learning Java a couple months ago and Spring Boot2 in January 2018. I understand how challenging it can be to make sense of tutorials so, I have created a package called "documentation". 
 
 THE text file : "documentation.txt" lays down the order in which each document was created; Then each java class has a corresponding text file in the documentation package explaining what each methods does more or less line by line.
 
